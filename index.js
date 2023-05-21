@@ -20,39 +20,39 @@ wss.on("connection", function connection(ws) {
     const formattedData = data.toString("utf-8");
 
     if (formattedData.startsWith("mouse_up")) {
-      return navigationFunctions.mouseUp(formattedData);
+      return navigationFunctions.mouseUp(ws, formattedData);
     }
 
     if (formattedData.startsWith("mouse_down")) {
-      return navigationFunctions.mouseDown(formattedData);
+      return navigationFunctions.mouseDown(ws, formattedData);
     }
 
     if (formattedData.startsWith("mouse_left")) {
-      return navigationFunctions.mouseLeft(formattedData);
+      return navigationFunctions.mouseLeft(ws, formattedData);
     }
 
     if (formattedData.startsWith("mouse_right")) {
-      return navigationFunctions.mouseRight(formattedData);
+      return navigationFunctions.mouseRight(ws, formattedData);
     }
 
     if (formattedData.startsWith("mouse_position")) {
-      return navigationFunctions.mousePosition();
+      return navigationFunctions.mousePosition(ws);
     }
 
     if (formattedData.startsWith("draw_circle")) {
-      return drawingFunctions.drawCircle(formattedData);
+      return drawingFunctions.drawCircle(ws, formattedData);
     }
 
     if (formattedData.startsWith("draw_rectangle")) {
-      return drawingFunctions.drawRectangle(formattedData);
+      return drawingFunctions.drawRectangle(ws, formattedData);
     }
 
     if (formattedData.startsWith("draw_square")) {
-      return drawingFunctions.drawSquare(formattedData);
+      return drawingFunctions.drawSquare(ws, formattedData);
     }
 
     if (formattedData.startsWith("prnt_scrn")) {
-      return printScreenFunctions.printScreen();
+      return printScreenFunctions.printScreen(ws);
     }
   });
 });

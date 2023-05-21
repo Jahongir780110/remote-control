@@ -1,7 +1,7 @@
 import { mouse, Region, screen } from "@nut-tree/nut-js";
 import jimp from "jimp";
 
-export async function printScreen() {
+export async function printScreen(ws) {
   const size = 200;
   const position = await mouse.getPosition();
   const x = position.x;
