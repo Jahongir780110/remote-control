@@ -1,8 +1,8 @@
 import { mouse, Region, screen } from "@nut-tree/nut-js";
 import jimp from "jimp";
-import { WebSocket } from "ws";
+import { Duplex } from "stream";
 
-export async function printScreen(ws: WebSocket) {
+export async function printScreen(duplex: Duplex) {
   const size = 200;
   const position = await mouse.getPosition();
   const x = position.x;
@@ -25,5 +25,5 @@ export async function printScreen(ws: WebSocket) {
   const buffer = await jimpImg.getBufferAsync(jimp.MIME_PNG);
   const base64Image = buffer.toString("base64");
 
-  ws.send(`prnt_scrn ${base64Image}`);
+  duplex.write(`prnt_scrn ${base64Image}`);
 }

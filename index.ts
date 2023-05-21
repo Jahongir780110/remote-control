@@ -1,4 +1,4 @@
-import { WebSocketServer } from "ws";
+import { WebSocketServer, createWebSocketStream } from "ws";
 
 import { httpServer } from "./src/http_server/index.js";
 
@@ -16,43 +16,45 @@ wss.on("connection", function connection(ws) {
 
   ws.on("error", console.error);
 
-  ws.on("message", async function message(data) {
-    const formattedData = data.toString("utf-8");
+  const duplex = createWebSocketStream(ws, { decodeStrings: false });
+
+  duplex.on("data", async (data) => {
+    const formattedData = data.toString("utf8");
 
     if (formattedData.startsWith("mouse_up")) {
-      return navigationFunctions.mouseUp(ws, formattedData);
+      return navigationFunctions.mouseUp(duplex, formattedData);
     }
 
     if (formattedData.startsWith("mouse_down")) {
-      return navigationFunctions.mouseDown(ws, formattedData);
+      return navigationFunctions.mouseDown(duplex, formattedData);
     }
 
     if (formattedData.startsWith("mouse_left")) {
-      return navigationFunctions.mouseLeft(ws, formattedData);
+      return navigationFunctions.mouseLeft(duplex, formattedData);
     }
 
     if (formattedData.startsWith("mouse_right")) {
-      return navigationFunctions.mouseRight(ws, formattedData);
+      return navigationFunctions.mouseRight(duplex, formattedData);
     }
 
     if (formattedData.startsWith("mouse_position")) {
-      return navigationFunctions.mousePosition(ws);
+      return navigationFunctions.mousePosition(duplex);
     }
 
     if (formattedData.startsWith("draw_circle")) {
-      return drawingFunctions.drawCircle(ws, formattedData);
+      return drawingFunctions.drawCircle(duplex, formattedData);
     }
 
     if (formattedData.startsWith("draw_rectangle")) {
-      return drawingFunctions.drawRectangle(ws, formattedData);
+      return drawingFunctions.drawRectangle(duplex, formattedData);
     }
 
     if (formattedData.startsWith("draw_square")) {
-      return drawingFunctions.drawSquare(ws, formattedData);
+      return drawingFunctions.drawSquare(duplex, formattedData);
     }
 
     if (formattedData.startsWith("prnt_scrn")) {
-      return printScreenFunctions.printScreen(ws);
+      return printScreenFunctions.printScreen(duplex);
     }
   });
 });

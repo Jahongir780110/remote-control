@@ -1,7 +1,7 @@
 import { mouse, Button, left, right, up, down } from "@nut-tree/nut-js";
-import WebSocket from "ws";
+import { Duplex } from "stream";
 
-export async function drawCircle(ws: WebSocket, formattedData: string) {
+export async function drawCircle(duplex: Duplex, formattedData: string) {
   const radius = Number(formattedData.split("draw_circle ")[1]);
   const position = await mouse.getPosition();
   const centerX = position.x;
@@ -19,10 +19,10 @@ export async function drawCircle(ws: WebSocket, formattedData: string) {
   }
 
   mouse.releaseButton(Button.LEFT);
-  ws.send(formattedData);
+  duplex.write(formattedData);
 }
 
-export async function drawRectangle(ws: WebSocket, formattedData: string) {
+export async function drawRectangle(duplex: Duplex, formattedData: string) {
   const width = Number(formattedData.split("draw_rectangle ")[1].split(" ")[0]);
   const height = Number(
     formattedData.split("draw_rectangle ")[1].split(" ")[1]
@@ -36,10 +36,10 @@ export async function drawRectangle(ws: WebSocket, formattedData: string) {
   await mouse.move(up(height));
 
   mouse.releaseButton(Button.LEFT);
-  ws.send(formattedData);
+  duplex.write(formattedData);
 }
 
-export async function drawSquare(ws: WebSocket, formattedData: string) {
+export async function drawSquare(duplex: Duplex, formattedData: string) {
   const length = Number(formattedData.split("draw_square ")[1]);
   await mouse.pressButton(Button.LEFT);
 
@@ -49,5 +49,5 @@ export async function drawSquare(ws: WebSocket, formattedData: string) {
   await mouse.move(up(length));
 
   mouse.releaseButton(Button.LEFT);
-  ws.send(formattedData);
+  duplex.write(formattedData);
 }
