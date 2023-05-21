@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "NodeNext",
+    "outDir": "build",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "lib": ["es6"],
+    "esModuleInterop": true,
+    "noImplicitAny": true
+  },
+  "include": ["src/**/*.ts", "index.ts"],
+  "ts-node": {
+    "esm": true
+  }
+}
